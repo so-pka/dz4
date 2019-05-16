@@ -55,4 +55,15 @@ class Task extends \yii\db\ActiveRecord
             'updated_at' => 'Updated at'
         ];
     }
+
+    public function getStatus()
+    {
+        return $this->hasOne(TaskStatuses::className(), ['id' => 'status']);
+    }
+
+
+    public function getResponsible()
+    {
+        return $this->hasOne(Users::class, ["id" => "responsible_id"]);
+    }
 }

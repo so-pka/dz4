@@ -50,6 +50,8 @@ class TasksFilter extends Task
 
         $this->load($params);
 
+
+
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
@@ -66,7 +68,8 @@ class TasksFilter extends Task
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'description', $this->description]);
+            ->andFilterWhere(['like', 'description', $this->description])
+           ->andFilterWhere(['month(deadline)' => $params['month']]);
 
         return $dataProvider;
     }

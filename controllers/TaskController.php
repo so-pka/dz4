@@ -1,36 +1,47 @@
 <?php
 
 namespace app\controllers;
+use Yii;
 use app\models\tables\Task;
+use app\models\filters\TasksFilter;
 //use app\models\Task;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use app\models\tables\Users;
+use app\models\tables\TaskStatuses;
+
+
+use yii\filters\VerbFilter;
+
+
+
 
 
 class TaskController extends Controller
 {
+
     public function actionIndex()
     {
 
-        $model = new Task();
+        $searchModel = new TasksFilter();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $model->setAttributes([
-            'title' => 'Знакомство',
-            'description' => 'Описание',
-            'status' => 'Тестируется',
-            'author' => 1,
-            'responsible' => 200,
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
         ]);
 
-        //var_dump($model->toArray());
-        //var_dump($model);
-        //exit;
+    }
 
-        return $this->render('task', [
-            'title' => 'Привет, тут будет форма задачи',
-            'content' => 'форма задачи'
-        ]);
+    public function actionOne($id)
+    {
+        return $this->render('one', [
+            'model' => Task::findOne($id),
+            'usersList' => Users::GetUsersList(),
+            'statusesList' => TaskStatuses::getList(),
 
+         ]);
     }
 
 
@@ -50,5 +61,17 @@ class TaskController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
+
+    public function actionSave($id)
+    {
+        if($model = Task::findOne($id)){
+            $model->load(\Yii::$app->request->post());
+            $model->save();
+            \Yii::$app->session->setFlash('success', "Изменения сохранены");
+        }else {
+            \Yii::$app->session->setFlash('error', "Не удалось сохранить изменения");
+        }
+        $this->redirect(\Yii::$app->request->referrer);
+    }
 
 }
