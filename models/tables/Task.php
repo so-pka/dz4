@@ -14,6 +14,11 @@ use Yii;
  * @property int $responsible_id
  * @property string $deadline
  * @property int $status_id
+ *
+ * @property Test $status
+ * @property Users $responsible
+ * @property TaskComments[] $taskComments
+ * @property TaskAttachments[] $taskAttachments
  */
 class Task extends \yii\db\ActiveRecord
 {
@@ -45,12 +50,15 @@ class Task extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'description' => 'Description',
-            'creator_id' => 'Creator ID',
+            'name' => Yii::t("app", "task_name"),
+           //'description' => 'Description',
+            'description' => Yii::t("app", "task_description"),
+           // 'creator_id' => 'Creator ID',
+            'creator_id' => Yii::t("app", "task_creator"),
             'responsible_id' => 'Responsible ID',
             'deadline' => 'Deadline',
-            'status_id' => 'Status ID',
+          // 'status_id' => 'Status ID',
+            'status_id' => Yii::t("app", "task_status"),
             'created_at' => 'Created at',
             'updated_at' => 'Updated at'
         ];
@@ -58,12 +66,27 @@ class Task extends \yii\db\ActiveRecord
 
     public function getStatus()
     {
-        return $this->hasOne(TaskStatuses::className(), ['id' => 'status']);
+        return $this->hasOne(TaskStatuses::className(), ['id' => 'status_id']);
     }
 
 
     public function getResponsible()
     {
-        return $this->hasOne(Users::class, ["id" => "responsible_id"]);
+        return $this->hasOne(Users::className(), ["id" => "responsible_id"]);
     }
+
+    public function getTaskComments()
+    {
+        return $this->hasMany(TaskComments::className(), ['task_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTaskAttachments()
+    {
+        return $this->hasMany(TaskAttachments::className(), ['task_id' => 'id']);
+    }
+
+
 }
