@@ -63,12 +63,14 @@ class Task extends Model
         parent::init();
     }
 
-    public function sendMail(){
-        Yii::$app->mailer->compose()
-            ->setTo('test@test.com')
+    public function sendMail($task)
+    {
+        $user = $task->responsible;
+        \Yii::$app->mailer->compose()
+            ->setTo($user->email)
             ->setFrom(['test@test.com' => 'Admin'])
-            ->setSubject('вам поставлена задача')
-            ->setTextBody('текст задачи')
+            ->setSubject('истекает дата выполнения задачи')
+            ->setTextBody("истекает дата выполнения задачи http://yii2?r=task/one&id={&task->id}")
             ->send();
 
     }

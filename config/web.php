@@ -57,14 +57,22 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'tasks' => 'task/index',
+                'task/<id>' => 'task/one',
+                'about' => 'site/about',
+                'contact' => 'site/contact',
+                'login' => 'site/login',
+                'delete' => 'task/delete',
+                'update' => 'task/update',
+                'save' => 'task/save',
             ],
         ],
-        */
+
     ],
     'params' => $params,
 ];
