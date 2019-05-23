@@ -70,6 +70,7 @@ $config = [
                 'delete' => 'task/delete',
                 'update' => 'task/update',
                 'save' => 'task/save',
+
                 
             ],
         ],
