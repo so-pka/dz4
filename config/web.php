@@ -13,7 +13,23 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
         '@img' => '@app/web/img/'
     ],
+
+    'modules' => [
+        'user' => [
+            'class' => 'dektrium\user\Module',
+            'admins' => ['admin'],
+        ],
+        'rbac' => [
+            'class' => 'dektrium\rbac\Module',
+            // 'admins' => ['admin'],
+        ],
+    ],
+
     'components' => [
+
+        'authManager' => [
+            'class' => \yii\rbac\DbManager::class,
+        ],
         'i18n' => [
             'translations' => [
                 'app*' => [
@@ -33,8 +49,9 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-                'identityClass' => app\models\UserIdentity::class,
-                'enableAutoLogin' => true,
+            'identityClass' => 'dektrium\user\models\User',
+            'enableAutoLogin' => true,
+
         ],
 
         'errorHandler' => [
@@ -58,22 +75,22 @@ $config = [
         ],
         'db' => $db,
 
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-                'tasks' => 'task/index',
-                'task/<id>' => 'task/one',
-                'about' => 'site/about',
-                'contact' => 'site/contact',
-                'login' => 'site/login',
-                'delete' => 'task/delete',
-                'update' => 'task/update',
-                'save' => 'task/save',
-
-                
-            ],
-        ],
+//        'urlManager' => [
+//            'enablePrettyUrl' => true,
+//            'showScriptName' => false,
+//            'rules' => [
+//                'tasks' => 'task/index',
+//                'task/<id>' => 'task/one',
+//                'about' => 'site/about',
+//                'contact' => 'site/contact',
+//                'login' => 'site/login',
+//                'delete' => 'task/delete',
+//                'update' => 'task/update',
+//                'save' => 'task/save',
+//
+//
+//            ],
+//        ],
 
     ],
     'params' => $params,
